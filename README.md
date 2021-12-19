@@ -1,9 +1,6 @@
-.. image:: http://img.shields.io/badge/node-v6.0.latest-orange.svg
-    :target: https://codecov.io/gh/gaainf/node-service/
-.. image:: https://codecov.io/gh/gaainf/node-service/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/gaainf/node-service/
-.. image:: https://img.shields.io/bower/l/node-service.svg
-    :target: https://github.com/gaainf/node-service/blob/master/LICENSE
+[![coverage](https://codecov.io/gh/gaainf/node-service/branch/master/graph/badge.svg)](https://codecov.io/gh/gaainf/node-service/)
+[![license](https://img.shields.io/bower/l/node-service.svg)](https://github.com/gaainf/node-service/blob/master/LICENSE)
+
 # node-service
 Run console command as a service using NodeJS
 
@@ -59,7 +56,7 @@ service.start('PING', ['1.1.1.1', '-c', '3']);
 console.log(service.get_pid());
 ```
 
-### Waiting til command is finished
+### Waiting til the command is finished
 
 ```js
 const Service = require('node-service');
