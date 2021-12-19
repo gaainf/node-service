@@ -1,5 +1,6 @@
+[![build](https://github.com/gaainf/node-service/actions/workflows/build.yml/badge.svg)](https://github.com/gaainf/node-service/actions/workflows/build.yml)
 [![coverage](https://codecov.io/gh/gaainf/node-service/branch/master/graph/badge.svg)](https://codecov.io/gh/gaainf/node-service/)
-[![license](https://img.shields.io/bower/l/node-service.svg)](https://github.com/gaainf/node-service/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gaainf/node-service/blob/master/LICENSE)
 
 # node-service
 Run console command as a service using NodeJS
@@ -29,13 +30,13 @@ This project requires NodeJS (version 8 or later) and NPM or YARN.
 To install and set up the library, run:
 
 ```sh
-$ npm install --save-dev node-service
+$ npm install node-service
 ```
 
 Or if you prefer using Yarn:
 
 ```sh
-$ yarn add --dev node-service
+$ yarn add node-service
 ```
 
 ## Usage
