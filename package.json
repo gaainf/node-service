@@ -1,0 +1,59 @@
+{
+  "name": "node-service",
+  "version": "1.0.0",
+  "description": "Run console command as a service using NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint"
+  },
+  "ensure": {
+    "deps": {
+      "checkDirs": [
+        "lib/*",
+        "*.js"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaainf/node-service.git"
+  },
+  "keywords": [
+    "node",
+    "service",
+    "console",
+    "start",
+    "stop",
+    "status",
+    "pid",
+    "stdout",
+    "stderr"
+  ],
+  "standard": {
+    "globals": [
+      "test",
+      "beforeEach",
+      "afterEach"
+    ],
+    "ignore": [
+      "/node_modules",
+      "/test",
+      "/doc",
+      "/example"
+    ]
+  },
+  "author": "gaainf <infinum@mail.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gaainf/node-service/issues"
+  },
+  "homepage": "https://github.com/gaainf/node-service#readme",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "jest": "^27.4.5"
+  }
+}
