@@ -37,7 +37,7 @@ test('get sdtout', async () => {
     service.start('pwd');
     expect(service.get_stdout()).toEqual('');
     await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
-    expect(require("path").resolve(__dirname)).toContain(service.get_stdout().trim());
+    expect(process.cwd()).toContain(service.get_stdout().trim());
     console.log(service.get_stdout());
 });
 
