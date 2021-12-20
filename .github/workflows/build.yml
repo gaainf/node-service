@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [8, 10, 12, 14]
+        node-version: [10, 12, 14]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,6 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+    - run: npm lint
     - run: npm test
     - name: Codecov
       uses: codecov/codecov-action@v2

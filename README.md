@@ -7,7 +7,7 @@ Run console command as a service using NodeJS
 
 ## Prerequisites
 
-This project requires NodeJS (version 8 or later) and NPM or YARN.
+This project requires NodeJS (version 10 or later) and NPM or YARN.
 
 ## Table of contents
 - [node-service](#node-service)
