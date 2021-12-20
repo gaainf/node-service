@@ -3,13 +3,13 @@ const Service = require('..')
 
 test('start service', () => {
     let service = new Service();
-    service.start('cd', ['.']);
+    service.start('node', ['-v']);
     expect(service.get_status()).toEqual('started');
 });
 
 test('stop service', async () => {
     let service = new Service();
-    service.start('cd', ['.']);
+    service.start('node', ['-v']);
     expect(service.get_status()).toEqual('started');
     service.stop();
     await service.wait_condition(() => {return service.get_status() == 'stopped'}, 3000);
@@ -18,15 +18,16 @@ test('stop service', async () => {
 
 test('get pid', async () => {
     let service = new Service();
-    service.start('cd', ['.']);
+    service.start('node', ['-v']);
     expect(service.get_status()).toEqual('started');
     await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
     expect(service.get_pid()).toBeGreaterThan(0);
 });
 
 test('wait service finished', async () => {
+    console.log( process.env.PATH );
     let service = new Service();
-    service.start('cd', ['.']);
+    service.start('node', ['-v']);
     expect(service.get_status()).toEqual('started');
     await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
     expect(service.get_status()).toEqual('finished');
@@ -43,7 +44,7 @@ test('get sdtout', async () => {
 
 test('get sdterr', async () => {
     let service = new Service();
-    service.start('cd', ['asdasd']);
+    service.start('node', ['-x']);
     expect(service.get_stderr()).toEqual('');
     await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
     expect(service.get_stderr().trim()).not.toEqual('');
@@ -68,4 +69,5 @@ test('wait timeout', async () => {
         () => {return service.get_status() == 'finished'}, 5000
     )).toEqual(true);
     expect(service.get_status()).toEqual('finished');
+    console.log(service.get_stdout());
 });

@@ -49,9 +49,7 @@
     "url": "https://github.com/gaainf/node-service/issues"
   },
   "homepage": "https://github.com/gaainf/node-service#readme",
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^8.5.0",
     "jest": "^27.4.5"
