@@ -30,13 +30,13 @@ This project requires NodeJS (version 10 or later) and NPM or YARN.
 To install and set up the library, run:
 
 ```sh
-$ npm install @gaainf/node-service
+$ npm install node-service
 ```
 
 Or if you prefer using Yarn:
 
 ```sh
-$ yarn add @gaainf/node-service
+$ yarn add node-service
 ```
 
 ## Usage
@@ -44,13 +44,13 @@ $ yarn add @gaainf/node-service
 ### Importing the module
 
 ```js
-const Service = require('@gaainf/node-service');
+const Service = require('node-service');
 ```
 
 ### Running console command as detached process
 
 ```js
-const Service = require('@gaainf/node-service');
+const Service = require('node-service');
 
 let service = new Service();
 service.start('PING', ['1.1.1.1', '-c', '3']);
@@ -60,7 +60,7 @@ console.log(service.get_pid());
 ### Waiting til the command is finished
 
 ```js
-const Service = require('@gaainf/node-service');
+const Service = require('node-service');
 
 async () => {
     let service = new Service();
@@ -74,7 +74,7 @@ async () => {
 ### Stopping the command
 
 ```js
-const Service = require('@gaainf/node-service');
+const Service = require('node-service');
 
 let service = new Service();
 service.start('PING', ['1.1.1.1', '-c', '3']);
@@ -84,7 +84,7 @@ service.stop();
 ### Getting stdout and stderr
 
 ```js
-const Service = require('@gaainf/node-service');
+const Service = require('node-service');
 
 (async () => {
     let service = new Service();
