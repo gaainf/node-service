@@ -3,8 +3,9 @@
 
 name: publish
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - 1.x
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,7 +16,8 @@ jobs:
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: npm publish
+      - run: npm run lint
+      - run: npm test
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
