@@ -2,7 +2,7 @@
 export = Service;
 declare class Service {
     cwd: string;
-    args: string;
+    args: any[];
     child: import("child_process").ChildProcessByStdio<null, import("stream").Readable, import("stream").Readable>;
     stdout: string;
     stderr: string;
@@ -59,7 +59,7 @@ declare class Service {
      * @param {Number} timeout timeout to wait
      * @param {Number} delay checking frequancy
      *
-     * @return {Boolean} true if condition is met
+     * @return {Promise<Boolean>} true if condition is met
      */
-    wait_condition(fn: Function, timeout?: number, delay?: number): boolean;
+    wait_condition(fn: Function, timeout?: number, delay?: number): Promise<boolean>;
 }

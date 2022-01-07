@@ -27,13 +27,13 @@ This project requires NodeJS (version 10 or later) and NPM or YARN.
 
 **BEFORE YOU INSTALL:** please read the [prerequisites](#prerequisites)
 
-To install and set up the library, run:
+Using npm:
 
 ```sh
 $ npm install @gaainf/node-service
 ```
 
-Or if you prefer using Yarn:
+Using Yarn:
 
 ```sh
 $ yarn add @gaainf/node-service
@@ -57,7 +57,7 @@ service.start('PING', ['1.1.1.1', '-c', '3']);
 console.log(service.get_pid());
 ```
 
-### Waiting til the command is finished
+### Waiting til the command is finished in background
 
 ```js
 const Service = require('@gaainf/node-service');
@@ -96,7 +96,7 @@ const Service = require('@gaainf/node-service');
 ```
 ## Versioning
 
-[SemVer](http://semver.org/) is used. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+[SemVer](http://semver.org/) is used. For the versions available, see the [tags on this repository](https://github.com/gaainf/node-service/tags).
 
 ## Authors
 
