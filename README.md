@@ -3,11 +3,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gaainf/node-service/blob/master/LICENSE)
 
 # node-service
-Run console command as a service using NodeJS
+Run console command as a service using `NodeJS`
 
 ## Prerequisites
 
-This project requires NodeJS (version 10 or later) and NPM or YARN.
+This project requires `NodeJS` (version 10 or later) and `npm` or `yarn`.
 
 ## Table of contents
 - [node-service](#node-service)
@@ -25,15 +25,15 @@ This project requires NodeJS (version 10 or later) and NPM or YARN.
 
 ## Installation
 
-**BEFORE YOU INSTALL:** please read the [prerequisites](#prerequisites)
+**Before you install:** please read the [prerequisites](#prerequisites)
 
-Using npm:
+Using `npm`:
 
 ```sh
 $ npm install @gaainf/node-service
 ```
 
-Using Yarn:
+Using `yarn`:
 
 ```sh
 $ yarn add @gaainf/node-service
@@ -53,8 +53,8 @@ const Service = require('@gaainf/node-service');
 const Service = require('@gaainf/node-service');
 
 let service = new Service();
-service.start('PING', ['1.1.1.1', '-c', '3']);
-console.log(service.get_pid());
+service.start('node', ['-v']);
+console.log(service.get_pid()); // process ID
 ```
 
 ### Waiting til the command is finished in background
@@ -67,7 +67,7 @@ async () => {
     service.start('PING', ['1.1.1.1', '-c', '3']);
     console.log(service.get_status());
     await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
-    console.log(service.get_status());
+    console.log(service.get_status()); // 'finished'
 }();
 ```
 
@@ -77,8 +77,9 @@ async () => {
 const Service = require('@gaainf/node-service');
 
 let service = new Service();
-service.start('PING', ['1.1.1.1', '-c', '3']);
+service.start('echo', ['Hello!']);
 service.stop();
+console.log(service.get_status()); // 'stopped'
 ```
 
 ### Getting stdout and stderr
@@ -88,10 +89,29 @@ const Service = require('@gaainf/node-service');
 
 (async () => {
     let service = new Service();
-    service.start('PING', ['1.1.1.1', '-c', '3']);
-    await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
+    service.start('node', ['-v']);
+    await service.wait_condition(() => {return /v/.test(service.get_stdout())}, 1000);
+    console.log(service.get_stdout()); // STDOUT
+    service.start('node', ['-x']);
+    await service.wait_condition(() => {return /bad option/.test(service.get_stderr())}, 1000);
+    console.log(service.get_stderr()); // STDERR
+})();
+```
+
+### Parametrising input properties
+
+```js
+const Service = require('@gaainf/node-service');
+
+(async () => {
+    let service = new Service({
+        cwd: 'node',
+        args: ['-e', 'setTimeout(function(){console.log("Hi!")},1000);'],
+        timeout: 2000
+    });
+    service.start();
+    await service.wait_condition(() => {return service.get_status() == 'finished'});
     console.log(service.get_stdout());
-    console.log(service.get_stderr());
 })();
 ```
 ## Versioning
