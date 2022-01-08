@@ -1,4 +1,4 @@
-[![build](https://github.com/gaainf/node-service/actions/workflows/build.yml/badge.svg)](https://github.com/gaainf/node-service/actions/workflows/build.yml)
+[![build](https://github.com/gaainf/node-service/actions/workflows/push.yml/badge.svg)](https://github.com/gaainf/node-service/actions/workflows/build.yml)
 [![coverage](https://codecov.io/gh/gaainf/node-service/branch/master/graph/badge.svg)](https://codecov.io/gh/gaainf/node-service/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gaainf/node-service/blob/master/LICENSE)
 
