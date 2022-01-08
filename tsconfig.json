@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "types": [
+        "node"
+    ],
+    "outDir": "./types",
+    "target": "es2017"
+  },
+  "include": [
+    "lib"
+  ],
+  "compileOnSave": true,
+  "files": [
+    "index.js"
+  ],
+}

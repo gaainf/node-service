@@ -5,8 +5,9 @@
   "main": "index.js",
   "typings": "./types/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "lint": "eslint . --ext .js"
+    "lint": "eslint . --ext .js",
+    "build": "tsc",
+    "test": "jest"
   },
   "ensure": {
     "deps": {
@@ -50,9 +51,17 @@
     "url": "https://github.com/gaainf/node-service/issues"
   },
   "homepage": "https://github.com/gaainf/node-service#readme",
-  "dependencies": {},
   "devDependencies": {
     "eslint": "^7.11.0",
-    "jest": "^27.4.5"
+    "jest": "^27.4.5",
+    "typescript": "^4.4.3",
+    "husky": "^4.3.5"
+  },
+  "es6": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn build",
+      "pre-push": "yarn test"
+    }
   }
 }
