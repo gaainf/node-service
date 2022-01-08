@@ -1,23 +1,29 @@
 /// <reference types="node" />
 export = Service;
 declare class Service {
+    constructor({ cwd, args, timeout, delay }?: {
+        cwd?: string;
+        args?: any[];
+        timeout?: number;
+        delay?: number;
+    });
     cwd: string;
     args: any[];
+    timeout: number;
+    delay: number;
     child: import("child_process").ChildProcessByStdio<null, import("stream").Readable, import("stream").Readable>;
     stdout: string;
     stderr: string;
     error: any;
     status: string;
     exitCode: number;
-    defaultTimeout: number;
-    delay: number;
     /**
      * Start console command
      *
      * @param {String} cwd console command path
      * @param {Array} args arguments
      */
-    start(cwd: string, args?: any[]): void;
+    start(cwd?: string, args?: any[]): void;
     /**
      * Stop console command
      */
