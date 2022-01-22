@@ -1,5 +1,4 @@
-const Service = require('..')
-
+const {Service, Services} = require('..');
 
 test('start service', () => {
     let service = new Service();
@@ -69,4 +68,156 @@ test('wait timeout', async () => {
     )).toEqual(true);
     expect(service.get_status()).toEqual('finished');
     console.log(service.get_stdout());
+});
+
+test('constructor finished timings', async () => {
+    let service = new Service({
+        timeout: 300,
+        delay: 100
+    });
+    service.start('node', ['-v']);
+    expect(service.get_stderr()).toEqual('');
+    expect(await service.wait_condition(
+        () => {return service.get_status() == 'finished'}
+    )).toEqual(true);
+    expect(service.get_status()).toEqual('finished');
+    expect(service.get_duration()).toBeLessThan(300);
+});
+
+test('constructor started timings', async () => {
+    let service = new Service({
+        timeout: 100,
+        delay: 50
+    });
+    service.start('node', ['-e', 'setTimeout(function(){console.log("hi")},1000);']);
+    expect(service.get_stderr()).toEqual('');
+    expect(await service.wait_condition(
+        () => {return service.get_status() == 'finished'}
+    )).toEqual(false);
+    expect(service.get_status()).toEqual('started');
+    expect(service.get_duration()).toBeGreaterThan(0);
+    expect(service.get_duration()).toBeLessThan(200);
+});
+
+test('stop finished', async () => {
+    let service = new Service();
+    service.start('node', ['-v']);
+    expect(service.get_stderr()).toEqual('');
+    expect(await service.wait_condition(
+        () => {return service.get_status() == 'finished'}, 5000
+    )).toEqual(true);
+    expect(service.get_status()).toEqual('finished');
+    service.stop();
+    expect(service.get_error().code).toEqual('ESRCH');
+});
+
+test('repeat', async () => {
+    let service = new Service({
+        cwd: 'node',
+        args: [
+            '-e', `
+            const http = require("http");
+            const listener = (req, res) => {res.end('Hi!')};
+            http.createServer(listener).listen(8888, '127.0.0.1', () => {});`
+        ],
+        timeout: 5000
+    });
+
+    //let curl = new Services({cwd: 'curl', args: ['-m1', 'http://127.0.0.1:8888/']});
+    let curl = new Services({
+        cwd: 'node',
+        args: [
+            '-e', `
+            const https = require('http')
+            const options = {
+                hostname: '127.0.0.1',
+                port: 8888,
+                path: '/',
+                method: 'GET'
+            }
+            
+            const req = https.request(options, res => {
+                res.on('data', d => {
+                    process.stdout.write(d);
+                })
+            })
+            
+            req.on('error', error => {
+                console.error(error);
+            })
+            
+            req.end()`
+        ]});
+    try {
+        service.start();
+        await curl.repeat(() => {return /Hi!/.test(curl.get_stdout())}, 4000, 1000);
+    } finally {
+        service.stop();
+    }
+    expect(curl.get_stdout()).toContain('Hi!');
+});
+
+test('stop repeat', async () => {
+    let services = new Services({
+        cwd: 'node',
+        args: ['-e', 'setTimeout(function(){console.log("hi")},5000);']
+    });
+    await services.repeat(() => {return /hi/.test(services.get_stdout())}, 1000, 300);
+    expect(services.get_status()).toEqual('stopped');
+    expect(services.get_stdout()).toEqual('');
+    for (let element of services.services){
+        expect(element.get_status()).toEqual('stopped');
+        expect(element.get_stdout()).toEqual('');
+    }
+});
+
+test('get total duration on repeat', async () => {
+    let service = new Service({
+        cwd: 'node',
+        args: [
+            '-e', `
+            const http = require("http");
+            const listener = (req, res) => {res.end('Hi!')};
+            http.createServer(listener).listen(8889, '127.0.0.1', () => {});`
+        ],
+        timeout: 5000
+    });
+
+    //let curl = new Services({cwd: 'curl', args: ['-m1', 'http://127.0.0.1:8888/']});
+    let curl = new Services({
+        cwd: 'node',
+        args: [
+            '-e', `
+            const https = require('http')
+            const options = {
+                hostname: '127.0.0.1',
+                port: 8889,
+                path: '/',
+                method: 'GET'
+            }
+            
+            const req = https.request(options, res => {
+                res.on('data', d => {
+                    process.stdout.write(d);
+                })
+            })
+            
+            req.on('error', error => {
+                console.error(error);
+            })
+            
+            req.end()`
+        ],
+        timeout: 4000,
+        delay: 1000
+    });
+    try {
+        service.start();
+        await curl.repeat(() => {return /Hi!/.test(curl.get_stdout())});
+    } finally {
+        service.stop();
+    }
+    expect(curl.get_status()).toEqual('finished');
+    expect(curl.get_duration()).toBeGreaterThan(0);
+    expect(curl.get_duration()).toBeLessThan(4000);
 });
