@@ -96,7 +96,7 @@ test('constructor started timings', async () => {
     )).toEqual(false);
     expect(service.get_status()).toEqual('started');
     expect(service.get_duration()).toBeGreaterThan(0);
-    expect(service.get_duration()).toBeLessThan(200);
+    expect(service.get_duration()).toBeLessThan(1000);
 });
 
 test('stop finished', async () => {
@@ -169,6 +169,7 @@ test('stop repeat', async () => {
         expect(element.get_status()).toEqual('stopped');
         expect(element.get_stdout()).toEqual('');
     }
+    services.stop_all();
 });
 
 test('get total duration on repeat', async () => {
@@ -216,6 +217,7 @@ test('get total duration on repeat', async () => {
         await curl.repeat(() => {return /Hi!/.test(curl.get_stdout())});
     } finally {
         service.stop();
+        curl.stop_all();
     }
     expect(curl.get_status()).toEqual('finished');
     expect(curl.get_duration()).toBeGreaterThan(0);
