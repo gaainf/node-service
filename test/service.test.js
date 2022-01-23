@@ -37,7 +37,13 @@ test('wait service finished', async () => {
 
 test('get sdtout', async () => {
     let service = new Service();
-    service.start('pwd');
+    let cwd = 'pwd';
+    let args = [];
+    if (process.platform == 'win32') {
+        cwd = 'cmd';
+        args = ['/c', 'echo', '%cd%'];
+    }
+    service.start(cwd, args);
     expect(service.get_stdout()).toEqual('');
     await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000);
     expect(service.get_stdout().trim()).not.toEqual('');
