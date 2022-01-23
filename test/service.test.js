@@ -1,5 +1,9 @@
 const {Service, Services} = require('..');
 
+afterAll(() => {
+    console.log('done');
+});
+
 test('start service', () => {
     let service = new Service();
     service.start('node', ['-v']);
@@ -217,7 +221,6 @@ test('get total duration on repeat', async () => {
         await curl.repeat(() => {return /Hi!/.test(curl.get_stdout())});
     } finally {
         service.stop();
-        curl.stop_all();
     }
     expect(curl.get_status()).toEqual('finished');
     expect(curl.get_duration()).toBeGreaterThan(0);
