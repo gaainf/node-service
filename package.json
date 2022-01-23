@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint . --ext .js",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "ensure": {
     "deps": {
