@@ -1,6 +1,6 @@
 {
   "name": "@gaainf/node-service",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Run console command as a service using NodeJS",
   "main": "index.js",
   "typings": "./types/index.d.ts",
