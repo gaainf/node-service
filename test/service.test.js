@@ -182,6 +182,7 @@ test('stop repeat', async () => {
     services.stop_all();
 });
 
+
 test('get total duration on repeat', async () => {
     let service = new Service({
         cwd: 'node',
@@ -231,4 +232,45 @@ test('get total duration on repeat', async () => {
     expect(curl.get_status()).toEqual('finished');
     expect(curl.get_duration()).toBeGreaterThan(0);
     expect(curl.get_duration()).toBeLessThan(4000);
+});
+
+test('start_all and wait_all_conditions', async () => {
+    let services = new Services([
+        {cwd: 'node', args: ['-v']},
+        {cwd: 'node', args: ['-e', 'setTimeout(function(){console.log("hi")},1000);']}
+    ]);
+    services.start_all();
+    await services.wait_all_conditions([
+        () => {return services.services[0].get_status() == 'finished'},
+        () => {return services.services[1].get_status() == 'finished'}
+    ]);
+    for(let service of services.services) {
+        expect(service.get_status()).toEqual('finished');
+    }
+    expect(services.get_duration()).toBeGreaterThan(1000);
+});
+
+test('cant\'t run repeat if start_all was called', async () => {
+    let services = new Services([
+        {cwd: 'node', args: ['-v']},
+        {cwd: 'node', args: ['--version']}
+    ]);
+    services.start_all();
+    let result = await services.repeat(() => {return services.services[1].get_status() == 'finished'});
+    await services.wait_all_conditions([
+        () => {return services.services[0].get_status() == 'finished'},
+        () => {return services.services[1].get_status() == 'finished'}
+    ]);
+    for(let service of services.services) {
+        expect(service.get_status()).toEqual('finished');
+    }
+    expect(result).toEqual(false);
+});
+
+test('cant\'t run start_all if repeat was called', async () => {
+    let services = new Services({cwd: 'node', args: ['-v'], delay: 50, timeout: 3000});
+    await services.repeat(() => {return services.get_status() == 'finished'});
+    services.start_all();
+    expect(services.get_status()).toEqual('finished');
+    expect(services.services.length).toBeGreaterThan(0);
 });

@@ -91,7 +91,7 @@ export class Service {
      * @param {Number} timeout timeout to wait
      * @param {Number} delay checking frequancy
      *
-     * @return {Promise<Boolean>} true if condition is met
+     * @return {Promise<Boolean>} true if condition met
      */
     wait_condition(fn: Function, timeout?: number, delay?: number): Promise<boolean>;
 }
@@ -121,23 +121,38 @@ export class Services extends Service {
      * ```
      */
     constructor(config: any);
+    configs: any[];
     services: any[];
     /**
      * Update properties of base class. Copy values from the last try.
      */
     _update_properties(): void;
     /**
+     * Start all commands
+     */
+    start_all(): void;
+    /**
      * Stop all running commands
      */
     stop_all(): void;
     /**
-     * Repeat command until condition met or timeout exceeded
+     * Waiting until all conditions met or timeout exceeded
+     * the each condition corresponds to the each command
+     * if number of conditions is less then number of commands then corresponding number of commands will be checked
+     *
+     * @param {Array} conditions array of functions
+     *
+     * @return {Promise<Boolean>} true if all conditions met
+     */
+    wait_all_conditions(conditions?: any[]): Promise<boolean>;
+    /**
+     * Repeat single command until condition met or timeout exceeded
      *
      * @param {Function} fn condition function
      * @param {Number} timeout timeout to wait
      * @param {Number} delay checking frequancy
      *
-     * @return {Promise<Boolean>} true if condition is met
+     * @return {Promise<Boolean>} true if condition met
      */
     repeat(fn: Function, timeout?: number, delay?: number): Promise<boolean>;
 }

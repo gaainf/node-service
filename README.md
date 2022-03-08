@@ -17,18 +17,19 @@ This project requires `NodeJS` (version 10 or later) and `npm` or `yarn`.
   - [Installation](#installation)
   - [Usage](#usage)
     - [Import](#Import)
-    - [Service](#service)
+    - [Service](#Service)
       - [Running console command as detached process](#Running-console-command-as-detached-process)
       - [Waiting for a command to complete in the background](#Waiting-for-a-command-to-complete-in-the-background)
-      - [Stopping command](#stopping-command)
-      - [Getting stdout and stderr](#getting-stdout-and-stderr)
-      - [Parametrising input properties](#parametrising-input-properties)
-      - [Calculating duration](#calculating-duration)
-    - [Services](#services)
-      - [Repeat command until condition met](#Repeat-command-until-condition-met)
-  - [Versioning](#versioning)
-  - [Authors](#authors)
-  - [License](#license)
+      - [Stopping command](#Stopping-command)
+      - [Getting stdout and stderr](#Getting-stdout-and-stderr)
+      - [Parametrising input properties](#Parametrising-input-properties)
+      - [Calculating duration](#Calculating-duration)
+    - [Services](#Services)
+      - [Run several commands and wait until all conditions met](#Run-several-commands-and-wait-until-all-conditions-met)
+      - [Repeat specific command until condition met](#Repeat-specific-command-until-condition-met)
+  - [Versioning](#Versioning)
+  - [Authors](#Authors)
+  - [License](#License)
 
 ## Installation
 
@@ -159,7 +160,30 @@ const {Service} = require('@gaainf/node-service');
 
 ### Services
 
-#### Repeat command until condition met
+#### Run several commands and wait until all conditions met
+
+It is possible to run several comands in parallel and wait until all conditions met
+```js
+const {Service, Services} = require('@gaainf/node-service');
+
+(async () => {
+    let services = new Services([
+        {cwd: 'node', args: ['-v'], timeout: 10000},
+        {cwd: 'node', args: ['--help'], timeout: 10000},
+    ]);
+    services.start_all();
+    await services.wait_all_conditions([
+        () => {return services.services[0].get_status() == 'finished'},
+        () => {return services.services[1].get_status() == 'finished'}
+    ]);
+    for(let service of services.services) {
+        console.log(service.get_stdout());
+    }
+    console.log("Duration time: " + services.get_duration());
+})();
+```
+
+#### Repeat specific command until condition met
 
 Following example runs HTTP server in separate process and repeats curl command until the server doesn't respond properly or timeout exceedded. At the end, it prints output data and calculates average duration.
 ```js
