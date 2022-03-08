@@ -89,8 +89,7 @@ async () => {
     service.start('PING', ['1.1.1.1', '-c', '3']);
     console.log(service.get_status());
     // timeout: 3 sec, delay: 1 sec
-    await service.wait_condition(() => {
-        return service.get_status() == 'finished'}, 3000, 1000);
+    await service.wait_condition(() => {return service.get_status() == 'finished'}, 3000, 1000); //boolean function, timeout, delay
     console.log(service.get_status()); // 'finished'
 }();
 ```
@@ -168,8 +167,8 @@ const {Service, Services} = require('@gaainf/node-service');
 
 (async () => {
     let services = new Services([
-        {cwd: 'node', args: ['-v'], timeout: 10000},
-        {cwd: 'node', args: ['--help'], timeout: 10000},
+        {cwd: 'node', args: ['-v'], timeout: 1000},
+        {cwd: 'node', args: ['--help'], timeout: 1000},
     ]);
     services.start_all();
     await services.wait_all_conditions([
